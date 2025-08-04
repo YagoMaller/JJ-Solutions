@@ -1,0 +1,112 @@
+<head>
+    <link rel=stylesheet type="text/css" href="style2.css">
+    <link rel=stylesheet type="text/css" href="animations.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+</head>
+
+
+<section id="header" class="seccionActiva">
+    <div class="headerCont">
+        <div class="contenedor flex">
+            <div class="headerImgCont">
+                <img src="logo3.png"/>
+            </div>
+
+            <div class="menuCont">
+                <div id="btnMenu" class="btnMenu">
+                    <div class="linea uno"></div>
+                    <div class="linea dos"></div>
+                    <div class="linea tres"></div>
+                </div>  
+                    
+                <div id ="menuPrincipal" class="menuPrincipal"> 
+                        <a href='#banner'><li>Home</li></a>
+                        <a href='#aboutus'><li>About Us</li></a>
+                        <a href='#services'><li>Services</li></a>
+                        <a href='#contact'><li>Contact</li></a>
+                </div>
+            </div>
+
+        </div>
+                <!--
+        <div class = fondo>
+        </div>-->
+    </div>
+</section>
+
+
+
+<section id="banner">
+    <div class="banner">
+    <img class="imgBanner active" src="fondo3.jpg"/>
+    </div>
+</section>
+
+<section id="slider">
+    <div class="slider">
+        <div class="serviciosCont contenedor">
+            <img class="chevron left" src="img/chevrongrey.png" onclick="moverCarrusel('izquierda');stopAutoMover()">
+
+            <div class="servicios carrusel">           
+            </div>
+            <img class="chevron right" src="img/chevron.png" onclick="moverCarrusel('derecha');stopAutoMover()">
+        </div>
+
+    </div>
+</section>
+
+
+<section id="aboutus">
+    <div class="contenedor">
+        <div class="nosotro">
+            <span><b>JJ Solutions</b> offers a comprehensive range of services, 
+                including renovation and remodeling, interior fit-out, demolition, electrical and plumbing, 
+                landscaping and exterior work, and roofing. Whether it's revamping your interiors or transforming your outdoor spaces, 
+                we have the expertise to deliver remarkable results.</span>
+        </div>
+    </div>
+</section>
+
+
+<!--
+<section id="services">
+    services
+</section>
+
+
+<section id="contact"> 
+    <div class="formulario contenedor">
+        <div class="formContenedor">
+            <form action="" method="">
+                <input type="text" id="name" name="name" placeholder="Name*" required>
+                <input type="email" id="email" name="email" placeholder="Mail*" required>
+                <input type="tel" id="phone" name="phone" placeholder="Phone*" required>
+                <input type="text" id="service" name="service" placeholder="Services" required>
+                <textarea id="details" name="details" rows="8" placeholder="Message"></textarea>
+                <label for="cars">Choose a car:</label>
+
+                <select name="lenguajes" id="lang">
+                    <option value="javascript">JavaScript</option>
+                    <option value="php">PHP</option>
+                    <option value="java">Java</option>
+                    <option value="golang">Golang</option>
+                    <option value="python">Python</option>
+                    <option value="c#">C#</option>
+                    <option value="C++">C++</option>
+                    <option value="erlang">Erlang</option>
+            </form>
+        </div>  
+    </div>
+</section>
+-->
+
+
+<script type="module" src="./menu.js"></script>
+<script type="module" src="slider5.js?v=1.0.3"></script>
+
+
+
+

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Logo Menu</title>
+  <style>
+    /* Reset some default styles */
+    body {
+      margin: 0;
+      padding: 0;
+    }
+    
+    /* Logo styles */
+    .logo {
+      text-align: center;
+      background-color: #f2f2f2;
+      padding: 10px;
+      display: none; /* Initially hide the logo */
+      transition: all 5s ease; /* Animation duration and easing */
+    }
+    
+    .logo img {
+      width: 150px; /* Adjust the width as needed */
+    }
+    
+    /* Menu styles */
+    .menu {
+      background-color: #333;
+      color: #fff;
+      padding: 10px;
+      transition: padding-top 5s ease; /* Animation duration and easing */
+    }
+    
+    .menu ul {
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+      text-align: center;
+    }
+    
+    .menu ul li {
+      display: inline-block;
+      margin-right: 10px;
+    }
+    
+    .menu ul li a {
+      color: #fff;
+      text-decoration: none;
+      padding: 5px;
+    }
+    
+    .menu ul li a:hover {
+      background-color: #555;
+    }
+  </style>
+  <script>
+    document.onreadystatechange = function() {
+      if (document.readyState === 'complete') {
+        // Page has finished loading, show the logo and adjust its position
+        document.getElementById('logo').style.display = 'block';
+        document.getElementById('menu').style.paddingTop = '50px'; // Adjust the value as needed
+      }
+    };
+  </script>
+</head>
+<body>
+  <div id="logo" class="logo">
+    <img src="path/to/your/logo.png" alt="Logo">
+  </div>
+  <div id="menu" class="menu">
+    <ul>
+      <li><a href="#">Home</a></li>
+      <li><a href="#">About</a></li>
+      <li><a href="#">Services</a></li>
+      <li><a href="#">Contact</a></li>
+    </ul>
+  </div>
+</body>
+</html>
+    

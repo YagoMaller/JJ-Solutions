@@ -1,0 +1,21 @@
+export const services = [
+    { title: "Home Renovations",      image: "images/renovations2.jpg" },
+    { title: "Roofing",               image: "images/roofing2.jpg"     },
+    { title: "Flooring",              image: "images/flooring2.jpg"    },
+    { title: "Moving Services",       image: "images/moving.jpg"       },
+    { title: "Bath/Kitchen",          image: "images/flooring.jpg"     },
+    { title: "Air Conditioning",      image: "images/airconditioning.jpg" },
+    { title: "Painting",              image: "images/painting2.jpg"    },
+    { title: "Electrical",            image: "images/electric.jpg"     },
+    { title: "Carpentry",             image: "images/carpentry2.jpg"   },
+    { title: "Upholstery",            image: "images/upholstery2.jpg"  },
+    { title: "Welding",               image: "images/welding.jpg"      },
+    { title: "Murals",                image: "images/murals.jpg"       },
+    { title: "Landscaping",           image: "images/landscaping2.jpg" },
+    { title: "Demolition",            image: "images/demolition.jpg"   },
+    { title: "Trash Removal",         image: "images/trashremoval.jpg" },
+    { title: "Powerwashing",          image: "images/powerwash.jpg"    },
+    { title: "Handyman",              image: "images/handyman.jpg"     },
+    { title: "House/Commercial Cleaning", image: "images/cleaning3.jpg"  },
+  ];
+
