@@ -312,9 +312,17 @@ body{
     justify-content: space-between;
     align-content: space-between;
     margin: 0 10px;
+    gap: 10px;
+    cursor: grab;
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
 }
 
-
+.servicios:active {
+    cursor: grabbing;
+}
 
 .servicio{
     flex: 0 0 33.33%;    
@@ -322,7 +330,13 @@ body{
     justify-content: center;
     box-sizing: border-box;
     padding: 0 15px;
+    min-width: 200px;
+    transition: transform 0.3s ease;
+    pointer-events: auto;
+}
 
+.servicio:hover {
+    transform: scale(1.02);
 }
 
 .descServicio{
@@ -337,13 +351,21 @@ body{
     writing-mode: vertical-rl;
     transform: rotate(180deg);
     width: 50px;
+    min-height: 150px;
+    transition: background-color 0.3s ease;
+}
 
+.descServicio:hover {
+    background-color: #0a5a8a;
 }
 
 .descServicio h2{
     color: white;
     padding-top: 15px;
     font-size: 1.4em;
+    text-align: center;
+    margin: 0;
+    line-height: 1.2;
 }
 
 .contimg{
@@ -352,6 +374,19 @@ body{
     border-bottom: solid;
     border-width: 3px;
     border-color: white;
+    flex: 1;
+    overflow: hidden;
+}
+
+.contimg img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.servicio:hover .contimg img {
+    transform: scale(1.05);
 }
 
 
@@ -396,35 +431,108 @@ body{
 }
 
 
-.servicio{
-    flex: 0 0 33.33%;    
-    display: flex;
-    justify-content: center;
-    box-sizing: border-box;
-    padding: 0 15px;
-
+/* Responsive Design for Service Cards */
+@media screen and (max-width: 1024px) {
+    .serviciosCont.contenedor{
+        max-width: 80%;
+    }
+    
+    .servicio{
+        flex: 0 0 50%;
+        min-width: 180px;
+    }
+    
+    .descServicio h2{
+        font-size: 1.2em;
+    }
+    
+    /* Ensure chevrons are visible on tablet */
+    .chevron{
+        display: block !important;
+    }
 }
-
 
 @media screen and (max-width: 768px) {
     .serviciosCont.contenedor{
-        max-width: 100%;
+        max-width: 95%;
+        position: relative;
     }
+    
     .servicios{
         flex-direction: column;
         align-items: center;
+        gap: 20px;
     }
+    
     .servicio{
         flex: 0 0 100%;
         padding: 10px;
+        min-width: 250px;
+        max-width: 350px;
+        flex-direction: column;
     }
     
-}
-.servicio{
-    flex: 0 0 33.33%;    
-    display: flex;
-    justify-content: center;
-    box-sizing: border-box;
-    padding: 0 15px;
+    .descServicio{
+        writing-mode: horizontal-tb;
+        transform: none;
+        width: 100%;
+        min-height: auto;
+        padding: 10px;
+        border: 3px solid white;
+        border-top: none;
+    }
+    
+    .descServicio h2{
+        font-size: 1.1em;
+        padding: 5px 0;
+    }
+    
+    .contimg{
+        border-bottom: none;
+    }
+    
+    /* Hide chevrons on mobile */
+    .chevron{
+        display: none !important;
+    }
+    
+    /* Disable carousel transitions on mobile */
+    .itemCarrusel{
+        transition: none !important;
+    }
 
+    /* Mobile-specific styles for better touch interaction */
+    .servicios{
+        cursor: default;
+        overflow-x: auto;
+        overflow-y: hidden;
+        scroll-behavior: smooth;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none; /* Firefox */
+        -ms-overflow-style: none; /* IE and Edge */
+    }
+    
+    .servicios::-webkit-scrollbar {
+        display: none; /* Chrome, Safari, Opera */
+    }
+    
+    .servicios{
+        scroll-snap-type: x mandatory;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .serviciosCont.contenedor{
+        max-width: 100%;
+        padding: 0 10px;
+    }
+    
+    .servicio{
+        min-width: 200px;
+        max-width: 300px;
+    }
+    
+    .descServicio h2{
+        font-size: 1em;
+    }
 }
