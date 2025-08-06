@@ -19,21 +19,13 @@ document.addEventListener('DOMContentLoaded', () => {
         <div style="width: 50px;"></div>
       </div>
     `;
-    servicio.addEventListener('click', () => {
-      const serviceInput = document.getElementById('service');
-      if (serviceInput) serviceInput.value = title;
-      const contactSection = document.getElementById('contact');
-      if (contactSection) {
-        contactSection.scrollIntoView({ behavior: 'smooth' });
-      }
-    });
     container.appendChild(servicio);
   });
 
   // 2) Variables del carrusel
   const items        = document.querySelectorAll('.itemCarrusel');
   const totalItems   = items.length;
-  const itemsVisibles= window.innerWidth < 768 ? 1 : 3;
+  const itemsVisibles= 3;
 
   // 3) Funciones de control
   function actualizarChevron() {

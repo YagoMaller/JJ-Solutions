@@ -287,7 +287,7 @@ body{
     text-align: center;
     color: white;
     font-weight: 700;
-    font-size: 36px;
+    font-size:36;  
     display:flex;
     align-items: center;
     justify-content: center;
@@ -299,15 +299,15 @@ body{
 }
 
 .serviciosCont.contenedor{
+    position: absolute;
     display: flex;
     align-items: center;
-    width: 100%;
+    max-width: 50%;
 }
 
 
 .servicios{
     display: flex;
-    flex-wrap: wrap;
     overflow: hidden;
     justify-content: space-between;
     align-content: space-between;
@@ -392,15 +392,39 @@ body{
     margin: 5px 0;
     box-shadow: inset 0px 0px 10px 0px rgba(0,0,0,0.3);
     border: none;
-    font-size: 1em;
+    font-size: 1em;  
 }
+
+
+.servicio{
+    flex: 0 0 33.33%;    
+    display: flex;
+    justify-content: center;
+    box-sizing: border-box;
+    padding: 0 15px;
+
+}
+
+
 @media screen and (max-width: 768px) {
+    .serviciosCont.contenedor{
+        max-width: 100%;
+    }
     .servicios{
+        flex-direction: column;
         align-items: center;
     }
     .servicio{
         flex: 0 0 100%;
         padding: 10px;
     }
+    
+}
+.servicio{
+    flex: 0 0 33.33%;    
+    display: flex;
+    justify-content: center;
+    box-sizing: border-box;
+    padding: 0 15px;
 
 }
