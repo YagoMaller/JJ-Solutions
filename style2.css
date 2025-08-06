@@ -299,15 +299,15 @@ body{
 }
 
 .serviciosCont.contenedor{
-    position: absolute;
     display: flex;
     align-items: center;
-    max-width: 50%;
+    width: 100%;
 }
 
 
 .servicios{
     display: flex;
+    flex-wrap: wrap;
     overflow: hidden;
     justify-content: space-between;
     align-content: space-between;
@@ -395,11 +395,7 @@ body{
     font-size: 1em;
 }
 @media screen and (max-width: 768px) {
-    .serviciosCont.contenedor{
-        max-width: 100%;
-    }
     .servicios{
-        flex-direction: column;
         align-items: center;
     }
     .servicio{
