@@ -25,7 +25,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // 2) Variables del carrusel
   const items        = document.querySelectorAll('.itemCarrusel');
   const totalItems   = items.length;
-  const itemsVisibles= 3;
+  const itemsVisibles= window.innerWidth < 768 ? 1 : 3;
 
   // 3) Funciones de control
   function actualizarChevron() {
