@@ -1,112 +1,747 @@
+<!DOCTYPE html>
+<html lang="en">
 <head>
-    <link rel=stylesheet type="text/css" href="style2.css">
-    <link rel=stylesheet type="text/css" href="animations.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>JJ Solutions</title>
+    
+    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <!-- Icons (Lucide) -->
+    <script src="https://unpkg.com/lucide@latest"></script>
 
+    <style>
+        /* --- VARIABLES & RESET --- */
+        :root {
+            --color-fondo: #1b1b1b;
+            --color-secundario: #063e5a;
+            --color-secundario-transparente: rgba(6, 62, 90, 0.85);
+            --color-texto: #728584;
+            --color-blanco: #ffffff;
+            --transition-speed: 0.5s;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Raleway', sans-serif;
+            -webkit-tap-highlight-color: transparent; /* Remove tap blue box on mobile */
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+            background-color: var(--color-fondo);
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        /* --- LAYOUT GENERAL --- */
+        section {
+            width: 100%;
+            min-height: 100vh; /* Full viewport height */
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* --- HEADER / INDICATORS --- */
+        .logo-fixed {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            z-index: 100;
+            width: 120px;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
+        }
+        
+        /* Indicador de Menú a la derecha */
+        .menu-trigger {
+            position: fixed;
+            top: 50%;
+            right: 0;
+            transform: translateY(-50%);
+            background-color: var(--color-secundario-transparente);
+            color: white;
+            padding: 15px 5px 15px 10px;
+            border-top-left-radius: 10px;
+            border-bottom-left-radius: 10px;
+            cursor: pointer;
+            z-index: 200;
+            box-shadow: -2px 0 10px rgba(0,0,0,0.3);
+            transition: transform 0.3s ease;
+            display: flex;
+            align-items: center;
+        }
+
+        .menu-trigger:active {
+            transform: translateY(-50%) scale(0.95);
+        }
+
+        .menu-hint {
+            writing-mode: vertical-rl;
+            text-orientation: mixed;
+            font-size: 0.8rem;
+            margin-right: 5px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        /* --- MENU LATERAL (OFF-CANVAS) --- */
+        .side-menu {
+            position: fixed;
+            top: 0;
+            right: -100%; /* Hidden by default */
+            width: 85%;
+            max-width: 400px;
+            height: 100%;
+            background-color: var(--color-fondo);
+            z-index: 300;
+            transition: right 0.4s cubic-bezier(0.4, 0.0, 0.2, 1);
+            padding: 20px;
+            overflow-y: auto;
+            box-shadow: -5px 0 20px rgba(0,0,0,0.5);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .side-menu.active {
+            right: 0;
+        }
+
+        .menu-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            z-index: 290;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.4s ease;
+            backdrop-filter: blur(2px);
+        }
+
+        .menu-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .menu-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            border-bottom: 1px solid var(--color-texto);
+            padding-bottom: 15px;
+        }
+
+        .menu-title {
+            color: var(--color-blanco);
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .close-btn {
+            color: var(--color-blanco);
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+
+        .menu-nav ul {
+            list-style: none;
+        }
+
+        .menu-nav > ul > li {
+            margin-bottom: 20px;
+        }
+
+        .menu-link {
+            display: block;
+            color: var(--color-blanco);
+            text-decoration: none;
+            font-size: 1.4rem;
+            font-weight: 600;
+            transition: color 0.3s;
+        }
+
+        .menu-link:hover {
+            color: var(--color-secundario);
+        }
+
+        /* Subcategories Styles */
+        .submenu-category {
+            color: var(--color-secundario);
+            font-size: 1rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-top: 15px;
+            margin-bottom: 5px;
+            padding-left: 10px;
+            border-left: 2px solid var(--color-secundario);
+        }
+
+        .submenu-list {
+            list-style: none;
+            padding-left: 15px;
+        }
+
+        .submenu-list li a {
+            color: var(--color-texto);
+            font-size: 0.95rem;
+            text-decoration: none;
+            display: block;
+            padding: 5px 0;
+            transition: transform 0.2s;
+        }
+
+        .submenu-list li a:hover {
+            color: var(--color-blanco);
+            transform: translateX(5px);
+        }
+
+
+        /* --- SECTION 1: SERVICES (FULLSCREEN SLIDER) --- */
+        #services {
+            height: 100vh;
+            background: #000;
+        }
+
+        .slider-container {
+            width: 100%;
+            height: 100%;
+            position: relative;
+        }
+
+        .slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+            z-index: 1;
+        }
+
+        .slide.active {
+            opacity: 1;
+            z-index: 2;
+        }
+
+        .slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            /* Filter to darken image slightly so text pops */
+            filter: brightness(0.85); 
+        }
+
+        /* Service Control Box (Bottom Right) */
+        .service-control-box {
+            position: absolute;
+            bottom: 8%; /* Espacio desde abajo */
+            right: 0;
+            background-color: var(--color-secundario-transparente);
+            padding: 15px 30px 15px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 15px;
+            border-top-left-radius: 5px;
+            border-bottom-left-radius: 5px;
+            z-index: 10;
+            backdrop-filter: blur(5px);
+            min-width: 280px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+            
+            /* Animación de entrada */
+            opacity: 0; 
+            transform: translateX(50px);
+            animation: slideInBox 0.8s ease-out forwards 0.5s;
+        }
+
+        @keyframes slideInBox {
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .service-name {
+            color: white;
+            font-size: 1.4rem;
+            font-weight: 700;
+            text-align: right;
+            flex-grow: 1;
+            line-height: 1.2;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
+        }
+
+        .nav-arrows {
+            display: flex;
+            flex-direction: column; /* Flechas verticales o horizontales, diseño pide "encerrando"? 
+                                      Haremos horizontal envolviendo el texto si es posible, 
+                                      pero para movil es mejor flechas grandes a los lados o agrupadas. 
+                                      Voy a ponerlas izquierda y derecha del texto para "encerrar". */
+            gap: 10px;
+        }
+
+        /* Re-diseño del control box para "encerrar" el nombre */
+        .service-control-box {
+            flex-direction: row;
+            padding: 10px 10px;
+        }
+        
+        .arrow-btn {
+            background: none;
+            border: none;
+            color: rgba(255,255,255,0.6);
+            cursor: pointer;
+            padding: 10px;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .arrow-btn:hover, .arrow-btn:active {
+            color: white;
+            transform: scale(1.2);
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+        }
+
+        .service-name-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 0 10px;
+            min-width: 150px;
+            text-align: center;
+        }
+
+        /* --- SECTION 2: ABOUT US --- */
+        #aboutus {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: var(--color-fondo);
+            padding: 40px 20px;
+            min-height: 100vh;
+        }
+
+        .about-content {
+            max-width: 800px;
+            text-align: center;
+            color: white;
+        }
+
+        .about-text {
+            font-size: 1.5rem; /* Ajustado para movil */
+            line-height: 1.6;
+            font-weight: 300;
+        }
+
+        .about-text b {
+            color: var(--color-secundario);
+            font-weight: 700;
+        }
+
+        /* --- SECTION 3: CONTACT --- */
+        #contact {
+            background-color: var(--color-fondo);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .contact-card {
+            background-color: var(--color-blanco);
+            width: 100%;
+            max-width: 500px;
+            border-radius: 8px;
+            padding: 40px 30px;
+            position: relative;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            
+            /* Bordes superior e inferior azules */
+            border-top: 5px solid var(--color-secundario);
+            border-bottom: 5px solid var(--color-secundario);
+        }
+
+        .contact-card h2 {
+            color: var(--color-secundario);
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2rem;
+            font-weight: 700;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-input, .form-textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background: #f9f9f9;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        .form-input:focus, .form-textarea:focus {
+            outline: none;
+            border-color: var(--color-secundario);
+            background: white;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 15px;
+            background-color: var(--color-secundario);
+            color: white;
+            border: none;
+            font-size: 1.1rem;
+            font-weight: 700;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background 0.3s;
+            text-transform: uppercase;
+        }
+
+        .submit-btn:hover {
+            background-color: #0a5a8a;
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 480px) {
+            .about-text {
+                font-size: 1.2rem;
+            }
+            .service-control-box {
+                bottom: 12%; /* Más arriba en móviles pequeños para no chocar con interfaces de navegador */
+                min-width: auto;
+                width: 90%; /* Casi ancho completo en móvil */
+                right: 0;
+                border-radius: 0;
+                border-top-left-radius: 10px;
+                border-bottom-left-radius: 10px;
+            }
+            .service-name {
+                font-size: 1.2rem;
+            }
+        }
+    </style>
 </head>
+<body>
 
+    <!-- LOGO FIJO -->
+    <img src="logo3.png" alt="JJ Solutions" class="logo-fixed" onerror="this.style.display='none'; document.body.insertAdjacentHTML('afterbegin', '<h2 style=\'position:absolute;top:20px;left:20px;z-index:100;color:white;\'>JJ Solutions</h2>')">
 
-<section id="header" class="seccionActiva">
-    <div class="headerCont">
-        <div class="contenedor flex">
-            <div class="headerImgCont">
-                <img src="logo3.png"/>
-            </div>
+    <!-- INDICADOR MENU (SWIPE HINT) -->
+    <div class="menu-trigger" id="menuTrigger">
+        <span class="menu-hint">MENU</span>
+        <i data-lucide="chevron-left"></i>
+    </div>
 
-            <div class="menuCont">
-                <div id="btnMenu" class="btnMenu">
-                    <div class="linea uno"></div>
-                    <div class="linea dos"></div>
-                    <div class="linea tres"></div>
-                </div>  
-                    
-                <div id ="menuPrincipal" class="menuPrincipal"> 
-                        <a href='#banner'><li>Home</li></a>
-                        <a href='#aboutus'><li>About Us</li></a>
-                        <a href='#services'><li>Services</li></a>
-                        <a href='#contact'><li>Contact</li></a>
-                </div>
-            </div>
-
+    <!-- MENU OVERLAY & SIDEBAR -->
+    <div class="menu-overlay" id="menuOverlay"></div>
+    <aside class="side-menu" id="sideMenu">
+        <div class="menu-header">
+            <span class="menu-title">Menu</span>
+            <button class="close-btn" id="closeMenuBtn"><i data-lucide="x" size="32"></i></button>
         </div>
-                <!--
-        <div class = fondo>
-        </div>-->
-    </div>
-</section>
+        <nav class="menu-nav">
+            <ul>
+                <li><a href="#services" class="menu-link close-on-click">Services</a>
+                    <div id="servicesSubmenu">
+                        <!-- JS generará las categorías aquí -->
+                    </div>
+                </li>
+                <li><a href="#aboutus" class="menu-link close-on-click">About Us</a></li>
+                <li><a href="#contact" class="menu-link close-on-click">Contact</a></li>
+            </ul>
+        </nav>
+    </aside>
 
-
-
-<section id="banner">
-    <div class="banner">
-    <img class="imgBanner active" src="fondo3.jpg"/>
-    </div>
-</section>
-
-<section id="slider">
-    <div class="slider">
-        <div class="serviciosCont contenedor">
-            <img class="chevron left" src="img/chevrongrey.png" onclick="moverCarrusel('izquierda');stopAutoMover()">
-
-            <div class="servicios carrusel">           
-            </div>
-            <img class="chevron right" src="img/chevron.png" onclick="moverCarrusel('derecha');stopAutoMover()">
+    <!-- SECCION 1: SERVICIOS -->
+    <section id="services">
+        <div class="slider-container" id="sliderContainer">
+            <!-- Las diapositivas se generarán con JS -->
         </div>
 
-    </div>
-</section>
+        <div class="service-control-box">
+            <button class="arrow-btn" id="prevBtn">
+                <i data-lucide="chevron-left" size="32"></i>
+            </button>
+            <div class="service-name-container">
+                <span class="service-name" id="currentServiceName">Loading...</span>
+            </div>
+            <button class="arrow-btn" id="nextBtn">
+                <i data-lucide="chevron-right" size="32"></i>
+            </button>
+        </div>
+    </section>
 
-
-<section id="aboutus">
-    <div class="contenedor">
-        <div class="nosotro">
-            <span><b>JJ Solutions</b> offers a comprehensive range of services, 
+    <!-- SECCION 2: ABOUT US -->
+    <section id="aboutus">
+        <div class="about-content">
+            <p class="about-text">
+                <b>JJ Solutions</b> offers a comprehensive range of services, 
                 including renovation and remodeling, interior fit-out, demolition, electrical and plumbing, 
                 landscaping and exterior work, and roofing. Whether it's revamping your interiors or transforming your outdoor spaces, 
-                we have the expertise to deliver remarkable results.</span>
+                we have the expertise to deliver remarkable results.
+            </p>
         </div>
-    </div>
-</section>
+    </section>
 
-
-<!--
-<section id="services">
-    services
-</section>
-
-
-<section id="contact"> 
-    <div class="formulario contenedor">
-        <div class="formContenedor">
-            <form action="" method="">
-                <input type="text" id="name" name="name" placeholder="Name*" required>
-                <input type="email" id="email" name="email" placeholder="Mail*" required>
-                <input type="tel" id="phone" name="phone" placeholder="Phone*" required>
-                <input type="text" id="service" name="service" placeholder="Services" required>
-                <textarea id="details" name="details" rows="8" placeholder="Message"></textarea>
-                <label for="cars">Choose a car:</label>
-
-                <select name="lenguajes" id="lang">
-                    <option value="javascript">JavaScript</option>
-                    <option value="php">PHP</option>
-                    <option value="java">Java</option>
-                    <option value="golang">Golang</option>
-                    <option value="python">Python</option>
-                    <option value="c#">C#</option>
-                    <option value="C++">C++</option>
-                    <option value="erlang">Erlang</option>
+    <!-- SECCION 3: CONTACTO -->
+    <section id="contact">
+        <div class="contact-card">
+            <h2>Get in Touch</h2>
+            <form action="#" method="POST">
+                <div class="form-group">
+                    <input type="text" name="name" placeholder="Name" class="form-input" required>
+                </div>
+                <div class="form-group">
+                    <input type="email" name="email" placeholder="Email" class="form-input" required>
+                </div>
+                <div class="form-group">
+                    <input type="tel" name="phone" placeholder="Phone" class="form-input">
+                </div>
+                <div class="form-group">
+                    <textarea name="message" rows="5" placeholder="How can we help?" class="form-textarea" required></textarea>
+                </div>
+                <button type="submit" class="submit-btn">Send Message</button>
             </form>
-        </div>  
-    </div>
-</section>
--->
+        </div>
+    </section>
+
+    <script>
+        // --- DATA ---
+        // Datos extraídos y categorizados
+        const servicesData = [
+            // Construction & Renovation
+            { title: "Home Renovations", image: "images/renovations2.jpg", category: "Construction" },
+            { title: "Bath/Kitchen", image: "images/flooring.jpg", category: "Construction" }, // Assuming flooring.jpg was used for bath/kitchen in original
+            { title: "Carpentry", image: "images/carpentry2.jpg", category: "Construction" },
+            { title: "Welding", image: "images/welding.jpg", category: "Construction" },
+            { title: "Demolition", image: "images/demolition.jpg", category: "Construction" },
+            
+            // Exterior & Roofing
+            { title: "Roofing", image: "images/roofing2.jpg", category: "Exterior" },
+            { title: "Landscaping", image: "images/landscaping2.jpg", category: "Exterior" },
+            { title: "Powerwashing", image: "images/powerwash.jpg", category: "Exterior" },
+            
+            // Interiors & Finishes
+            { title: "Flooring", image: "images/flooring2.jpg", category: "Interiors" },
+            { title: "Painting", image: "images/painting2.jpg", category: "Interiors" },
+            { title: "Upholstery", image: "images/upholstery2.jpg", category: "Interiors" },
+            { title: "Murals", image: "images/murals.jpg", category: "Interiors" },
+
+            // Systems & Maintenance
+            { title: "Air Conditioning", image: "images/airconditioning.jpg", category: "Systems" },
+            { title: "Electrical", image: "images/electric.jpg", category: "Systems" },
+            { title: "Handyman", image: "images/handyman.jpg", category: "Systems" },
+
+            // Other Services
+            { title: "Moving Services", image: "images/moving.jpg", category: "General" },
+            { title: "Trash Removal", image: "images/trashremoval.jpg", category: "General" },
+            { title: "House/Commercial Cleaning", image: "images/cleaning3.jpg", category: "General" },
+        ];
+
+        // --- APP LOGIC ---
+        document.addEventListener('DOMContentLoaded', () => {
+            // Inicializar Iconos
+            lucide.createIcons();
+
+            // --- 1. SLIDER LOGIC ---
+            const sliderContainer = document.getElementById('sliderContainer');
+            const nameDisplay = document.getElementById('currentServiceName');
+            let currentIndex = 0;
+            let autoSlideInterval;
+            let interactionTimeout;
+
+            // Renderizar Slides
+            servicesData.forEach((service, index) => {
+                const slide = document.createElement('div');
+                slide.className = `slide ${index === 0 ? 'active' : ''}`;
+                
+                // Usar placeholder si falla la imagen (simulación para desarrollo)
+                const img = document.createElement('img');
+                img.src = service.image;
+                img.alt = service.title;
+                img.onerror = function() {
+                    // Fallback visual si la imagen local no existe
+                    this.src = `https://via.placeholder.com/800x1200/063e5a/ffffff?text=${encodeURIComponent(service.title)}`;
+                };
+
+                slide.appendChild(img);
+                sliderContainer.appendChild(slide);
+            });
+
+            // Update UI
+            function updateSlider() {
+                // Actualizar clases de slides
+                const slides = document.querySelectorAll('.slide');
+                slides.forEach((s, i) => {
+                    s.classList.toggle('active', i === currentIndex);
+                });
+                
+                // Actualizar Texto con efecto fade
+                nameDisplay.style.opacity = 0;
+                setTimeout(() => {
+                    nameDisplay.textContent = servicesData[currentIndex].title;
+                    nameDisplay.style.opacity = 1;
+                }, 200);
+            }
+
+            function nextSlide() {
+                currentIndex = (currentIndex + 1) % servicesData.length;
+                updateSlider();
+            }
+
+            function prevSlide() {
+                currentIndex = (currentIndex - 1 + servicesData.length) % servicesData.length;
+                updateSlider();
+            }
+
+            // Auto Play Logic
+            function startAutoPlay() {
+                stopAutoPlay(); // Limpiar existente
+                autoSlideInterval = setInterval(nextSlide, 5000);
+            }
+
+            function stopAutoPlay() {
+                if (autoSlideInterval) clearInterval(autoSlideInterval);
+            }
+
+            function resetInactivityTimer() {
+                stopAutoPlay();
+                clearTimeout(interactionTimeout);
+                interactionTimeout = setTimeout(startAutoPlay, 5000); // Reiniciar auto-play después de 5s inactividad
+            }
+
+            // Event Listeners (Clicks)
+            document.getElementById('nextBtn').addEventListener('click', () => {
+                nextSlide();
+                resetInactivityTimer();
+            });
+
+            document.getElementById('prevBtn').addEventListener('click', () => {
+                prevSlide();
+                resetInactivityTimer();
+            });
+
+            // Iniciar slider
+            nameDisplay.textContent = servicesData[0].title;
+            startAutoPlay();
 
 
-<script type="module" src="menu.js"></script>
-<script type="module" src="slider5.js?v=1.0.3"></script>
+            // --- 2. MENU LOGIC ---
+            const menuTrigger = document.getElementById('menuTrigger');
+            const closeMenuBtn = document.getElementById('closeMenuBtn');
+            const sideMenu = document.getElementById('sideMenu');
+            const menuOverlay = document.getElementById('menuOverlay');
+            const closeLinks = document.querySelectorAll('.close-on-click');
+
+            // Categorize Services for Menu
+            const categories = {};
+            servicesData.forEach(s => {
+                if (!categories[s.category]) categories[s.category] = [];
+                categories[s.category].push(s);
+            });
+
+            const servicesSubmenu = document.getElementById('servicesSubmenu');
+            for (const [cat, items] of Object.entries(categories)) {
+                const catHeader = document.createElement('div');
+                catHeader.className = 'submenu-category';
+                catHeader.textContent = cat;
+                servicesSubmenu.appendChild(catHeader);
+
+                const ul = document.createElement('ul');
+                ul.className = 'submenu-list';
+                items.forEach(item => {
+                    const li = document.createElement('li');
+                    const a = document.createElement('a');
+                    a.href = '#services';
+                    a.textContent = item.title;
+                    a.addEventListener('click', () => {
+                        // Navegar al servicio específico (encontrar index y actualizar slider)
+                        const idx = servicesData.findIndex(s => s.title === item.title);
+                        if(idx !== -1) {
+                            currentIndex = idx;
+                            updateSlider();
+                            resetInactivityTimer();
+                            closeMenu();
+                        }
+                    });
+                    li.appendChild(a);
+                    ul.appendChild(li);
+                });
+                servicesSubmenu.appendChild(ul);
+            }
+
+            function openMenu() {
+                sideMenu.classList.add('active');
+                menuOverlay.classList.add('active');
+                menuTrigger.style.transform = "translateY(-50%) translateX(100px)"; // Esconder trigger
+            }
+
+            function closeMenu() {
+                sideMenu.classList.remove('active');
+                menuOverlay.classList.remove('active');
+                menuTrigger.style.transform = "translateY(-50%)"; // Mostrar trigger
+            }
+
+            menuTrigger.addEventListener('click', openMenu);
+            closeMenuBtn.addEventListener('click', closeMenu);
+            menuOverlay.addEventListener('click', closeMenu);
+            closeLinks.forEach(l => l.addEventListener('click', closeMenu));
 
 
+            // --- 3. TOUCH / SWIPE LOGIC ---
+            let touchStartX = 0;
+            let touchEndX = 0;
+            const minSwipeDistance = 50;
 
+            document.addEventListener('touchstart', e => {
+                touchStartX = e.changedTouches[0].screenX;
+                resetInactivityTimer(); // Cualquier toque resetea el timer del slider
+            }, {passive: true});
 
+            document.addEventListener('touchend', e => {
+                touchEndX = e.changedTouches[0].screenX;
+                handleSwipe();
+            }, {passive: true});
+
+            function handleSwipe() {
+                const distance = touchStartX - touchEndX; // Positivo = Swipe Left (Derecha a Izquierda)
+                
+                // Si el swipe es significativo
+                if (Math.abs(distance) > minSwipeDistance) {
+                    if (distance > 0) {
+                        // SWIPE LEFT (Abrir menú o Siguiente Slide)
+                        // Lógica: Si estamos en el borde derecho, abrir menú. Si no, cambiar slide?
+                        // El requerimiento dice: "desliz de dedo hacia la izquierda" despliega menú.
+                        // Asumiremos que el swipe left global abre el menú para priorizar esa función touch.
+                        openMenu();
+                    } else {
+                        // SWIPE RIGHT (Cerrar menú si está abierto)
+                        if (sideMenu.classList.contains('active')) {
+                            closeMenu();
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
